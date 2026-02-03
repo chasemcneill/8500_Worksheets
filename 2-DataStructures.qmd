@@ -41,6 +41,8 @@ x[c(3,3)]
 ```
 (@) Create your own vector and return three values using the subsetting method above. 
 ```{r}
+chase <- c(10, 20, 2, 8.5, 5, 33, 102)
+chase[c(1,2,4)]
 
 ```
 
@@ -52,7 +54,7 @@ x[-c(3, 1)]
 
 (@) What happened here? Describe this in your own words. 
 
->
+> This function returns all the values in the vector x besides the numbers first and third values. 
 
 You can use either positive or negative integers to subset a vector but you **cannot mix the two**.
 
@@ -69,7 +71,7 @@ x[x > 7]
 
 (@) What is going on in each of the lines above? Describe it in your own words. 
 
->
+> If an item in the vector is greater than 8, TRUE, it will list it in the output. If not, it results in FALSE and the item is not returned in the output. 
 
 Nothing returns the original vector. This isn't that useful here but can come in handy when you have more complex structures like matrices and arrays. 
 ```{r}
@@ -82,7 +84,7 @@ If your vector is named, you can also use character vectors to return elements w
 y[c("d")]
 ```
 (@) What happened here? Explain this in your own words. 
-
+The funtion creates a new vector, y, which has set names for the first four items in the original vector of x. The other three items are NA because the function only goes to the letter d, because it specifies only four letters. Lastly, the second line is looking for the letter d, which outputs the fourth item, 8.35. 
 #### Matrices
 
 We can subset higher dimensional structures, like matrices, too. First lets define a matrix. In R, **a matrix** is a collection of elements of the same data type (numeric, character, or logical) arranged into a fixed number of rows and columns. Since you are only working with rows and columns, a matrix is called two dimensional. To create a matrix you can use the `matrix()` function.
@@ -98,14 +100,15 @@ In the `matrix()` function:
 
 (@) You try now, create a matrix that had five rows with numbers that range from 25 to 49. 
 ```{r}
-
+matrix(25:49, byrow = TRUE, nrow = 5)
 ```
 
 (@) Can you create a matrix that has 3 rows with only even numbers from 2 to 18? 
 ```{r}
+matrix(seq(2, 18, by = 2), byrow = TRUE, nrow = 3)
 
 ```
-
+###?????Use this as problem you had. 
 ##### Subsetting Matricies 
 
 The most common way to subset matrices and arrays is to use a simple generalization of the same subsetting method we used for vectors above. We can subset by supplying index for each dimension separated by a comma. So it looks like this: 
@@ -142,7 +145,7 @@ data("gayguides")
 
 To subset this data we could pull two particular columns like this: 
 ```{r}
-#gayguides[2:3]
+gayguides[2:3]
 ```
 That returns columns 2 and 3 (including every single row!). 
 
@@ -153,22 +156,23 @@ gayguides[1:3,]
 
 (@) Why is this different? What do we get compared to the previous example? 
 
->
+> ???????
 
 (@) Can you find just the city and state for the first 5 entries? 
 ```{r}
-
+head(gayguides[8:9], 5)
 ```
 
 (@) How about the street address and type for rows 2,555 to 2,560?
 
 ```{r}
-
+gayguides[2555:2560, 5:6]
 ```
+Messed up the order of column and row. 
 
 (@) Load another dataset from `DigitalMethodsData`. Subset it to find some element of the data. Write the code below and then explain what element of the data you wanted to subset and why:
 ```{r}
-
+????
 ```
 
 > 
@@ -177,8 +181,8 @@ Another useful operator to know is `$` which we used a little bit in the previou
  
 So for example both of these produce the same result. One is just easier to type. Because the output here is so large, I've commented these two lines out. Uncomment them and the run the block.
 ```{r R.options=list(max.print=10)}
-#gayguides["title"]
-#gayguides$title
+gayguides["title"]
+gayguides$title
 ```
 
 Notice the above output is _huge_. We can combine `$` and `[` to drill down more specifically like we did earlier.
@@ -188,10 +192,13 @@ gayguides$city[100:110]
 
 (@) What does this code do? 
 
->
+>?????
 
 (@) Can you find all the titles of locations in South Carolina? (Hint: You'll need to use both `$` and `[]`)
 ```{r}
+sc <- gayguides[gayguides$state == "SC",] 
+sc[, 3]
+unique(sc[, 3])
 
 ```
 
@@ -208,11 +215,12 @@ In class we learned about the pipe operator `%>%`. The pipe takes the output fro
 ```{r}
 # These are equivalent:
 head(gayguides, 10)
-gayguides %>% head(10)
+gayguides |> head(10)
 ```
 
 (@) Use the pipe to subset the gayguides data to get the title column, then look at the first 20 entries.
 ```{r}
+gayguides$title |> head(20)
 ```
 
 ## Putting It All Together: Historical Data Challenges
