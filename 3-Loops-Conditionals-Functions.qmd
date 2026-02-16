@@ -77,29 +77,35 @@ if (x <= 30) {
 (@) Create a list of presidents and store it in a variable. Use an `if` statement to check if the number of presidents in the list is more than 5. If its not, indicate that too. 
 ```{r}
 presidents <- c("Washington", "Jefferson", "Adams", "Obama", "Clinton", "Bush")
-if (length(presidents) >= 5) {
+if (length(presidents) > 5) {
   print(TRUE) } else {
   print(FALSE)
+}
+## or
+presidents <- c("Washington", "Jefferson", "Adams", "Obama", "Clinton", "Bush")
+if (length(presidents) >= 5) {
+  print("The number of presidents in the list is more than 5") } else {
+  print("The number of presidents in the list is less than 5")
 }
 ```
 
 (@) You can also use an if statement to check a variable in a dataframe. How might you use an if statement to check if the GayGuides dataset contains any year after 1990? (Hint: first try to figure out how to determine the latest year in the dataframe and then build an if statement that checks that and prints something out if its true or false. You should think about what kind of value in contained in the Year column, how to access it, and how to check for the latest value.) 
 
 ```{r}
-if(1990 < gayguides$Year) {
-  print(TRUE)} else {
-    print(FALSE)
-}
-### Maybe use this as the question one idk. 
 if(1990 < max(gayguides$Year)){
   print(TRUE)} else {
     print(FALSE)
+}
+## or 
+if(1990 < max(gayguides$Year)){
+  print("The GayGuides dataset does go past the year 1990")} else {
+    print("The GayGuides dataset does not go past the year 1990")
 }
 ```
 
 (@) Reflect on the question above. How did you figure this out? What was the process you went through to build this chunk of code?
 
-> ??????
+> Well first off I knew we had to find whether or not a year in the gayguides dataset went past the year 1990. To do this I used the max() function on the subsetted dataset. Gayguides does not go beyond the year 1990 because the most recent year is 1985. 
 
 #### Loops
 
@@ -131,7 +137,7 @@ for (p in 1:length(presidents)) {
 
 (@) Why does this work? What does `length()` do and why do we use it on `presidents`?
 
-> ????
+> the length() function sets or returns the items in vectors and factors, and of any other R object for which a method has been defined. It is used for presidents so that each indivudal observation in the vector is returned seperately. 
 
 Create a character vector that contains the title of each of your classes this semester. Can you write a `for` loop that prints out "I am enrolled in" and the name of each of your classes? ("I am enrolled in History 8150", "I am enrolled in History 8000".....etc). Hint: you'll need a function to combine the output and some text of your choosing inside the function. 
 
@@ -157,20 +163,9 @@ for (i in 1:length(gayguides$title)) {
   print(gayguides$title[i]) 
   }
 }
-for (i in 1:length(grepl("Bar", gayguides$titles, ignore.case = FALSE))) {
-  print(gayguides$title[i])
-}
-
-## for (i in 1:length(gayguides$title)) {
-## print(grepl("Bar", gayguides$title[], ignore.case = TRUE)) }
-## 
-## Messed up and ran this line. Had to kill terminal. 
-for (i in 1:length(gayguides$title)) { if grepl(("Bar", gayguides$title, ignore.case = TRUE)){print(gayguides$title[i])} else FALSE 
-}
-grepl("Bar", gayguides$title, ignore.case = TRUE)
 
 ```
-######????????????
+
 
 Sometimes we want our loop to terminate itself early. There are two statements that help us do that: 
 
@@ -200,8 +195,8 @@ for (i in 1:10) {
 ```
 
 (@) What happened here? Why did the loop only print 3 and 4? 
+The beginning function skips any of the numbers less than 3. The next function skips any numbers greater than or equal to five. Due to the conditions only 3 and 4 fit the criteria and are printed. 
 
-?????????
 (@) What if we wanted to loop through the gay guides data? Can you write a loop that iterates through the cities in the Gay Guides data and returns the title of any location in Greenville? 
 ```{r}
 for (i in 1:length(gayguides$city)) {
@@ -318,7 +313,7 @@ string_of_characters("Hello, Chase McNeill!")
 
 (@) Reflect on the process of building the above function. How did you go about figuring this out? 
 
->
+> I knew I had to make a function that would count the number of characters in a string. I built most of my function based off the prior example, only except I would have to replace "name" with a function that would count the characters of my input. That is where nchar() comes in and to make it work I added "characters" inside of the function. Then all I had to do was see if the function worked. 
 
 The body of a functions can use any of the techniques we've learned in this worksheet like loops and if statements. For example: 
 ```{r}
@@ -347,7 +342,7 @@ GeorgeWashington <- grade(60)
 
 ```
 
-> ????
+> GeorgeWashington is coded as a new character variable. If you want to see the letter grade you would just have to type in GeorgeWashington into your console, "C", or look at your environment. 
 
 
 Here's a more complex example: 
@@ -420,18 +415,6 @@ count_by_state <- function(abstate) {
   for (i in 1:nrow(gayguides)) {
     if (gayguides$state[i] == abstate) {
     locations_in_state <-locations_in_state + 1
-     print(paste("There are", locations_in_state, "locations in", abstate, sep=" "))
-    } else {
-      next 
-    } 
-  }
-}
-count_by_state <- function(abstate) {
-  data(gayguides)
-  locations_in_state <- 0
-  for (i in 1:nrow(gayguides)) {
-    if (gayguides$state[i] == abstate) {
-    locations_in_state <-locations_in_state + 1
     } else {
       next 
     } 
@@ -461,4 +444,4 @@ count_by_state_year("SC", 1975)
 
 (@) Reflection: How do loops, conditionals, and functions work together? Give an example from this worksheet where you used all three.
 
-> ????
+> In the prior question to find the amount of locations for a given year and state, it required using all three of loops, conditionals, and functions. Firstly, the function works as a set of code that performs a task you want to complete over and over again. To formulate more complex functions you need to use loops and conditionals. The conditionals and choices cycle through datasets to help find what you are looking for, such as using the function if(). As for loops they look at each item in the vector, and looks at if a specific action is called once and continues to update the value everytime. My example creates the function count_by_state_year by looking at specific states and years. If the year and state is found it updates the loop and continues until there is nothing left to check. Then it pastes the result of the code. The function is then left to be used over and over again as I see fit. 
