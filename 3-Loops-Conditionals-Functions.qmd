@@ -1,7 +1,7 @@
 ---
 title: "Worksheet 3: Loops, Conditionals and Functions"
-author: ""
-date: ""
+author: "Chase McNeill"
+date: "Feb 16th"
 ---
 
 _This is the third in a series of worksheets for History 8500 at Clemson University. The goal of these worksheets is simple: practice, practice, practice. The worksheet introduces concepts and techniques and includes prompts for you to practice in this interactive document. When you are finished, you should change the author name (above), render your document to a pdf, and upload it to canvas. Don't forget to commit your changes as you go and push to github when you finish the worksheet._
@@ -67,22 +67,39 @@ if (x > 90) {
 
 (@) You are teaching History 100 for Clemson. Write an `if` statement that calculates whether the enrollment cap of 30 on your class has been met. 
 ```{r}
-
+x <- 21
+if (x <= 30) {
+  print("Enrollment is open")
+} else { print("Enrollment is closed")
+  }
 ```
 
 (@) Create a list of presidents and store it in a variable. Use an `if` statement to check if the number of presidents in the list is more than 5. If its not, indicate that too. 
 ```{r}
-
+presidents <- c("Washington", "Jefferson", "Adams", "Obama", "Clinton", "Bush")
+if (length(presidents) >= 5) {
+  print(TRUE) } else {
+  print(FALSE)
+}
 ```
 
 (@) You can also use an if statement to check a variable in a dataframe. How might you use an if statement to check if the GayGuides dataset contains any year after 1990? (Hint: first try to figure out how to determine the latest year in the dataframe and then build an if statement that checks that and prints something out if its true or false. You should think about what kind of value in contained in the Year column, how to access it, and how to check for the latest value.) 
 
 ```{r}
+if(1990 < gayguides$Year) {
+  print(TRUE)} else {
+    print(FALSE)
+}
+### Maybe use this as the question one idk. 
+if(1990 < max(gayguides$Year)){
+  print(TRUE)} else {
+    print(FALSE)
+}
 ```
 
 (@) Reflect on the question above. How did you figure this out? What was the process you went through to build this chunk of code?
 
-> 
+> ??????
 
 #### Loops
 
@@ -114,22 +131,46 @@ for (p in 1:length(presidents)) {
 
 (@) Why does this work? What does `length()` do and why do we use it on `presidents`?
 
-> 
+> ????
 
 Create a character vector that contains the title of each of your classes this semester. Can you write a `for` loop that prints out "I am enrolled in" and the name of each of your classes? ("I am enrolled in History 8150", "I am enrolled in History 8000".....etc). Hint: you'll need a function to combine the output and some text of your choosing inside the function. 
 
 ```{r}
-
+classes <- c("I am enrolled in HIST 8500:Digital Methods for History I", "I am enrolled in HIST 8540: Local History and Digital Archives", "I am enrolled in Thesis Hours")
+for (i in 1:length(classes)){
+    print(classes[i]) }
 ```
 
 (@) Now let's practice with data. Create a loop that prints out the first 5 titles from the gayguides dataset. Hint: You'll need to loop from 1 to 5 and access `gayguides$title[i]`
 ```{r}
-
+for (i in 1:length(gayguides$title)) {
+  if(i < 6) {
+    print(gayguides$title[i])
+  }
+} 
 ```
 
 (@) Can you modify the above loop to only print titles that contain the word "Bar"? (Hint: use grepl() to search for "Bar" in the title)
 ```{r}
+for (i in 1:length(gayguides$title)) {
+  if(grepl("Bar", gayguides$title[i], ignore.case = TRUE)) {
+  print(gayguides$title[i]) 
+  }
+}
+for (i in 1:length(grepl("Bar", gayguides$titles, ignore.case = FALSE))) {
+  print(gayguides$title[i])
+}
+
+## for (i in 1:length(gayguides$title)) {
+## print(grepl("Bar", gayguides$title[], ignore.case = TRUE)) }
+## 
+## Messed up and ran this line. Had to kill terminal. 
+for (i in 1:length(gayguides$title)) { if grepl(("Bar", gayguides$title, ignore.case = TRUE)){print(gayguides$title[i])} else FALSE 
+}
+grepl("Bar", gayguides$title, ignore.case = TRUE)
+
 ```
+######????????????
 
 Sometimes we want our loop to terminate itself early. There are two statements that help us do that: 
 
@@ -160,10 +201,14 @@ for (i in 1:10) {
 
 (@) What happened here? Why did the loop only print 3 and 4? 
 
-
+?????????
 (@) What if we wanted to loop through the gay guides data? Can you write a loop that iterates through the cities in the Gay Guides data and returns the title of any location in Greenville? 
 ```{r}
-
+for (i in 1:length(gayguides$city)) {
+  if(gayguides$city[i] == "Greenville") {
+    print(gayguides$title[i])
+  }
+}
 ```
 
 (@) The Gay Guides data is quite large (60,000+ entries). Write a loop that searches through the data and finds the first 5 locations in New York City. Your loop should:
@@ -173,7 +218,15 @@ for (i in 1:10) {
 
 **Hint:** Create a counter to track how many you've found.
 ```{r}
-
+nyc_count <- 0
+for (i in 1:length(gayguides$city)) {
+if (gayguides$city[i] != "New York City")
+    next
+print(gayguides$title[i])
+nyc_count <- nyc_count + 1
+if(nyc_count >= 5)
+break
+}
 ```
 
 `while` is another useful tool for writing loops. While will run a loop _while_ a condition is true. Once that condition is not true, it exits. For example: 
@@ -220,7 +273,7 @@ historyStudents <- function(studentname, class) {
 
 (@) Can you run this function? 
 ```{r}
-
+historyStudents("Chase McNeill", "History 8500")
 ```
 
 
@@ -235,17 +288,32 @@ Let's start with a simpler function to build confidence.
 
 (@) Write a function called `double()` that takes a number and returns that number multiplied by 2.
 ```{r}
+double <- function(y){
+  doublevalue <- y * 2
+  print(doublevalue)
+}
+double(2)
 ```
+
 
 (@) Write a function called `greet()` that takes a name and returns "Hello, [name]!" 
 ```{r}
+greet <- function(name) {
+  statement <- paste("Hello, ", name, "!", sep="")
+  statement
+}
+greet("Chase McNeill")
 ```
 
 Now let's try something more complex:
 
 (@) Write a function that takes a string of text and counts the number of characters. The function should return "There are xx characters in that string." 
 ```{r}
-
+string_of_characters <- function(characters) {
+  string <- paste("There are", nchar(characters), "characters in that string.", sep=" ")
+  string
+}
+string_of_characters("Hello, Chase McNeill!")
 ```
 
 (@) Reflect on the process of building the above function. How did you go about figuring this out? 
@@ -276,9 +344,10 @@ grade(75)
 (@) In the example below, why doesn't George Washington's grade get printed out? 
 ```{r}
 GeorgeWashington <- grade(60)
+
 ```
 
->
+> ????
 
 
 Here's a more complex example: 
@@ -301,11 +370,38 @@ gg.locations("San Diego", 1980)
 (@) Write a function that accepts two arguments: a state and a year. The function should pull all the locations in that state and year from the gayguides dataset and return a statement that says "Found a location in [state] called [location title]". (Where [state] is the state and [location title] is the title of a location in that year and state.)
 
 ```{r}
-
+state_year <- function(state, year) {
+  data(gayguides)
+  for (i in 1:length(gayguides$state)) {
+    if (gayguides$state[i] == state && gayguides$Year[i] == year) {
+     print(paste("Found a location in", state, "called", gayguides$title[i]), sep=" ")
+    } else {
+      next 
+    } 
+  }
+}
+state_year("SC", 1983)
 ```
 
 (@) Use the Boston Women Voters dataset (BostonWomenVoters). Write a function that accepts the name of an occupation. Your function should return new dataframe that includes the records for every voter listed with that occupation.  
 ```{r}
+bwv.occupation <- function(Occupation) {
+  data(BostonWomenVoters)
+  
+  # 1. Create empty container OUTSIDE loop
+  result <- data.frame()
+  
+  # 2. Build it up INSIDE loop
+  for (i in 1:nrow(BostonWomenVoters)) {
+    if (BostonWomenVoters$Occupation[i] == Occupation) {
+      result <- rbind(result, BostonWomenVoters[i, ])
+    }
+  }
+  
+  # 3. Return AFTER loop completes
+  return(result)
+}
+bwv.occupation.result <- bwv.occupation("Housewife")
 
 ```
 
@@ -318,12 +414,51 @@ gg.locations("San Diego", 1980)
    - Counts how many locations are in that state
    - Returns a statement like "There are XX locations in [state]"
 ```{r}
+count_by_state <- function(abstate) {
+  data(gayguides)
+  locations_in_state <- 0
+  for (i in 1:nrow(gayguides)) {
+    if (gayguides$state[i] == abstate) {
+    locations_in_state <-locations_in_state + 1
+     print(paste("There are", locations_in_state, "locations in", abstate, sep=" "))
+    } else {
+      next 
+    } 
+  }
+}
+count_by_state <- function(abstate) {
+  data(gayguides)
+  locations_in_state <- 0
+  for (i in 1:nrow(gayguides)) {
+    if (gayguides$state[i] == abstate) {
+    locations_in_state <-locations_in_state + 1
+    } else {
+      next 
+    } 
+  }
+  print(paste("There are", locations_in_state, "locations in", abstate, sep=" "))
+}
+count_by_state("SC")
 ```
 
 (@) Can you modify your function to also accept a year as a second argument? So `count_by_state("SC", 1975)` would count locations in SC in 1975.
 ```{r}
+count_by_state_year <- function(abstate, abyear) {
+  data(gayguides)
+  locations_in_state_year <- 0
+  for (i in 1:nrow(gayguides)) {
+    if (gayguides$state[i] == abstate && gayguides$Year[i] == abyear) {
+    locations_in_state_year <-locations_in_state_year + 1
+    } else {
+      next 
+    } 
+  }
+  print(paste("There are", locations_in_state_year, "locations in", abstate, sep=" "))
+}
+count_by_state_year("NC", 1983)
+count_by_state_year("SC", 1975)
 ```
 
 (@) Reflection: How do loops, conditionals, and functions work together? Give an example from this worksheet where you used all three.
 
->
+> ????
